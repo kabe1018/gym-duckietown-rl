@@ -1,0 +1,83 @@
+# Unique numeric ID for each experiment (4 digits) [int],
+# WARNING: A leading 0 implies octal interpretation! I.e. don't start with a 0, (0000 is ok)!
+seed: &seed 0
+# 'Experiment name used for logging.
+experiment_name: &experiment_name 'Train_0030'
+# Algorithm used by the agent. Available options: PPO
+algo: 'PPO'
+# Algorithm specific config will be loaded from the file listed here.
+# Für SB3 empfiehlt es sich, eine angepasste PPO-Konfiguration zu verwenden (z.B. ppo_sb3.yml).
+algo_config_files:
+  PPO: "config/algo/ppo.yml"
+  general: "config/algo/general.yml"
+
+# === Environment pre- & post processing config ===
+env_config:
+  #robot_speed: 0.5
+
+  # Run mode: 'train', 'inference', 'debug'
+  mode: 'train'
+  # Length of an episode (if not terminated due to a failure)
+  episode_max_steps: 500
+  # Input image will be scaled to (height, width)
+  resized_input_shape: [84, 84]  # [80, 160]
+  # Crop the top part of the image
+  crop_image_top: true
+  # Crop off the top part: e.g. 3 crops the top third of the image
+  top_crop_divider: 3
+  # Convert image to grayscale
+  grayscale_image: false
+  # Stack multiple frames as input
+  frame_stacking: true
+  # Number of frames to stack if enabled
+  frame_stacking_depth: 3
+  # Apply motion blur to the images during training
+  motion_blur: false
+  # Map the action space to a certain type. Available options: 'leftright', 'leftright_clipped', 'leftright_braking', 'steering_braking', 'discrete',
+  # 'heading', 'heading_smooth', 'heading_trapz', 'heading_sine', 'heading_limited'
+  action_type: 'heading'
+  # Overwrite the default reward function of Gym Duckietown
+  # Available options: 'default', 'default_clipped', 'posangle', 'lane_distance'
+  reward_function: 'custom'
+  # Use Gym Duckietown's distortion parameter to generate fisheye-distorted images
+  distortion: true
+  # Maximum accepted starting angle deviation (in degrees)
+  accepted_start_angle_deg: 4
+  simulation_framerate: 30
+  # Skip frames in the agent-environment loop and only step the environment using the last action
+  frame_skip: 1
+  # Computed actions come into effect this much later in the time period of a step.
+  # Allowed values: floats in the (0., 1.) interval or 'random'
+  action_delay_ratio: 0.0
+  # Map(s) used during training – either a specific map or a multi-map configuration (e.g. 'multimap1')
+  training_map: 'custom_huge_loop'
+  # Use Gym Duckietown's domain randomization
+  domain_rand: true
+  dynamics_rand: false
+  camera_rand: false
+  # If >0.0, a new observation/frame may be a repeat of the previous one with a given probability.
+  frame_repeating: 0.0
+  # Spawn obstacles (duckies, duckiebots, etc.) at random drivable positions
+  spawn_obstacles: false
+  obstacles:
+    duckie:
+      density: 0.5
+      static: true
+    duckiebot:
+      density: 0
+      static: false
+  # Spawn a duckiebot in front of the controlled robot in every episode
+  spawn_forward_obstacle: false
+  # Warning: Using AIDOWrapper slows down the simulation (computing an observation can take much longer)
+  aido_wrapper: false
+  # Global keys for logging via wandb
+  wandb:
+    project: 'duckietown-rllib'
+  experiment_name: *experiment_name
+  seed: *seed
+
+# === Checkpoint / Restore settings ===
+# Zum Fortsetzen eines Trainings: -1 = kein Wiederherstellen, ansonsten die seed-ID des wiederherzustellenden Modells
+restore_seed: -1
+restore_experiment_idx: 0
+restore_checkpoint_idx: 0

@@ -1,0 +1,29 @@
+seed: 0
+timesteps_total: 3000000   # Aus der Tabelle: 1'000'000 Trainingsschritte
+
+sb3_config:
+  # Rollout-Parameter:
+  n_steps: 256             # In der Tabelle nicht explizit angegeben, 256 ist ein gängiger Wert
+  n_envs: 16              
+  device: "cuda"
+  
+  # Optimierungsparameter:
+  batch_size: 256          # In der Tabelle: Minibatch Size = 256
+  n_epochs: 10             # In der Tabelle: Epoches = 10
+  gamma: 0.99              # In der Tabelle: Gamma = 0.99
+  learning_rate: 0.00003      # In der Tabelle: 0.00005
+  gae_lambda: 0.95         # In der Tabelle: Lambda = 0.95
+  clip_range: 0.2          # In der Tabelle: Clip = 0.2
+  ent_coef: 0.0            # In der Tabelle: Coefficient Entropie = 0.0
+  vf_coef: 0.5             # In der Tabelle: Coefficient Critic = 0.5
+  clip_range_vf: 0.2       # Wird von SB3 optional unterstützt, in der Tabelle nicht erwähnt
+  max_grad_norm: 0.5       # In der Tabelle nicht erwähnt, aber Standardwert in SB3
+  
+  # Modell-/Policy-Konfiguration:
+  policy_kwargs:
+    normalize_images: False
+    features_extractor_kwargs:
+      features_dim: 256
+    net_arch: 
+      pi: [256]
+      vf: [256]

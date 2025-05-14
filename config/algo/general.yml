@@ -1,0 +1,37 @@
+# === Config file for any algorithm (SB3-Version) =============================
+# Total timesteps used to train a model (termination condition).
+timesteps_total: 2000000
+
+sb3_config:
+  # Anzahl an Zeitschritten pro Rollout (entspricht RLlib's rollout_fragment_length)
+  n_steps: 265
+  # Anzahl der Samples pro SGD-Minibatch (typischerweise kleiner als train_batch_size)
+  batch_size: 128
+  # Anzahl der Epochen (Minibatch-Durchläufe) pro Rollout
+  n_epochs: 30
+  # Diskontfaktor des MDP
+  gamma: 0.99
+  # Lernrate
+  learning_rate: 5e-5
+  # GAE (Generalized Advantage Estimation) Lambda-Wert
+  gae_lambda: 0.95
+  # PPO-Clip-Parameter für die Policy
+  clip_range: 0.2
+  # Entropie-Koeffizient (zur Förderung von Exploration)
+  ent_coef: 0.0
+  # Koeffizient des Value-Function Loss
+  vf_coef: 0.5
+  # (Optional) Clip-Parameter für die Value-Funktion
+  clip_range_vf: 0.2
+  # Maximale Gradienten-Norm (für Gradient Clipping)
+  max_grad_norm: 0.5
+  # Zufallszahlengenerator-Seed
+  seed: 1234
+
+evaluation_config:
+  # Evaluation: Alle 25 Trainingsschritte wird evaluiert
+  eval_freq: 25
+  # Anzahl der Episoden pro Evaluationsrunde
+  evaluation_duration: 2
+  # Optionale Einstellung, um den Eval-Env mit Monitor zu versehen
+  monitor: true
